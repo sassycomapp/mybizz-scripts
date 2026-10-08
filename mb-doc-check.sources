@@ -1,0 +1,27 @@
+# Which folder is which GBrain source. One line each:  source-id = /mnt/c/path
+# The source id must be exactly the id that "gbrain sources list" shows.
+default = /mnt/c/dev/project-library-global
+dev-root-hub = /mnt/c/dev/dev-root
+makepdlf-project-library = /mnt/c/dev/dev-makepdlf/makepdlf-project-library
+mb-3-cs-project-library = /mnt/c/dev/dev-mb-3-cs/mb-3-cs-project-library
+mb4ecom-project-library = /mnt/c/dev/dev-mb4ecom/mb4ecom-project-library
+mb5pdlf-project-library = /mnt/c/dev/dev-mb5pdlf/mb5pdlf-project-library
+mybizz-config-docs = /mnt/c/mybizz/mybizz-config-docs
+mybizz-os-docs = /mnt/c/mybizz/mybizz-os-docs
+data-mybizz-mgt = /mnt/c/data-mybizz-mgt
+pdlf = /mnt/c/pdlf
+mb-project-docs = /mnt/c/mybizz/mb-project-docs
+mb-memory-system-diagnostic = /mnt/c/mybizz/mb-memory-system-diagnostic
+mb-compile-rules = /mnt/c/mybizz/mb-compile-rules
+mb-sentinel-review = /mnt/c/mybizz/mb-sentinel-review
+mb-sysdoc-creator = /mnt/c/mybizz/mb-sysdoc-creator
+mb-submit-memory = /mnt/c/mybizz/mb-submit-memory
+mb-archify-scope = /mnt/c/mybizz/mb-archify-scope
+mb-close-out = /mnt/c/mybizz/mb-close-out
+
+# The path part of every link (the part MarkText opens when you click):
+# the full Windows path, for example C:/mybizz/x/y.md (tested in MarkText 2026-10-01).
+@paths = absolute
+
+# Line endings: every committed document is stored with LF.
+@eol = lf
