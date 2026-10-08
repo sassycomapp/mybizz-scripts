@@ -1169,6 +1169,11 @@ def run_hook(top: str, extra_roots, dry=False, delete_ok=False):
         if a not in old.corpus.live_set:
             continue
         x = old.id.get(a)
+        if x and x not in where:   # moved into another repository on the list
+            for q in new.live_files:
+                if not q.startswith(top + os.sep) and read_id(read_bytes(q)) == x:
+                    where[x] = q
+                    break
         if x and x in where and where[x] != a:
             dest = where[x]
             if dest in new.live_set:
