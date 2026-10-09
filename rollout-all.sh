@@ -10,7 +10,6 @@ REPOS=(
   /mnt/c/dev/dev-root
   /mnt/c/data-mybizz-mgt
   /mnt/c/pdlf
-  /mnt/c/dev/dev-makepdlf/makepdlf-project-library
   /mnt/c/dev/dev-mb-3-cs/mb-3-cs-project-library
   /mnt/c/dev/project-library-global
   /mnt/c/mybizz/mybizz-config-docs

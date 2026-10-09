@@ -146,7 +146,7 @@ patch(f"{D}/doc-check-config.md", r"\| 3 \| The program's built-in", "| 2 | The 
 patch(f"{D}/doc-check-explainer.md", r" The automated tests are not yet stored on this computer\.", "", "tests are stored", key="The automated tests are not yet stored on this computer")
 # -- project AGENTS.md files
 GIT = "- Git: agents never commit, push, reset, rebase, change branches or force-pull. There is no grant for Git. The developer runs `commit-all.sh`."
-for p in (f"{C}/dev/dev-makepdlf/makepdlf-project-library/AGENTS.md", f"{C}/pdlf/AGENTS.md", f"{C}/dev/dev-mb-3-cs/mb-3-cs-project-library/AGENTS.md"):
+for p in (f"{C}/pdlf/AGENTS.md", f"{C}/dev/dev-mb-3-cs/mb-3-cs-project-library/AGENTS.md"):
     if os.path.exists(p):
         patch(p, r"^- Git operations are permission-only:[^\n]*(?:\n  [^\n]*)*", GIT, "agents never use Git", flags=re.M)
 
