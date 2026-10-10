@@ -42,7 +42,7 @@ def patch(path, rx, rep, label, key, flags=re.S):
 print("\n2. The agent rule (global AGENTS.md)")
 RULE = """## Project documents
 
-On entering a project (`makepdlf`, `mb-3-cs`, `mb4ecom`, `mb5pdlf` or `pdlf`), read these first, as required reading: the repository's `README.md`, its `{slug}-config.md`, its `AGENTS.md` (or `agents.md`) and its `{slug}-explainer.md`. In a code repository the config and the explainer are in `theme/docs`. They are kept current by `/mb-project-docs`, which is run at close-out.
+On entering a project (`mb-3-cs`, `mb4ecom`, `mb5pdlf` or `pdlf`), read these first, as required reading: the repository's `README.md`, its `{slug}-config.md`, its `AGENTS.md` (or `agents.md`) and its `{slug}-explainer.md`. In a code repository the config and the explainer are in `theme/docs`. They are kept current by `/mb-project-docs`, which is run at close-out.
 
 ---
 
@@ -53,7 +53,7 @@ print("\n3. The close-out procedure")
 CO = f"{C}/mybizz/mybizz-os-docs/operating-procedures/close-out-process.md"
 STEP = """## Step 2a — agent: the project documents
 
-When the session worked in one of the five projects (`makepdlf`, `mb-3-cs`, `mb4ecom`, `mb5pdlf`, `pdlf`), run `/mb-project-docs` for that project, up to its Step 6. Its presentation (the changes to config, explainer and README, the statements that were no longer true, and the changed lines of `AGENTS.md`) is part of the gate message. After the approval, carry out its Step 7: write the files and add its copy line to the terminal block, before `commit-all.sh`. When the session worked in no project, skip this step.
+When the session worked in one of the four projects (`mb-3-cs`, `mb4ecom`, `mb5pdlf`, `pdlf`), run `/mb-project-docs` for that project, up to its Step 6. Its presentation (the changes to config, explainer and README, the statements that were no longer true, and the changed lines of `AGENTS.md`) is part of the gate message. After the approval, carry out its Step 7: write the files and add its copy line to the terminal block, before `commit-all.sh`. When the session worked in no project, skip this step.
 
 ## Step 3 — agent: after the approval"""
 patch(CO, r"## Step 3 — agent: after the approval", STEP, "Step 2a", "## Step 2a — agent: the project documents")
