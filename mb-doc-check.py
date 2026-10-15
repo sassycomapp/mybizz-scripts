@@ -3,7 +3,7 @@
 
 THE ONE LINK FORM. Every link in every document is stored in the same standard form:
 
-    [[[source-id:page-name|Shown text]]](relative/path/File%20Name.md)
+    [[[source-id:page-name|Shown text]]](C:/full/path/File%20Name.md)
 
   - The part inside the brackets is what GBrain reads (source id and page name, so links also work
     between repositories). The part in round brackets is what MarkText opens when you click.
@@ -80,7 +80,7 @@ URL_RE = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.-]*://")
 QUAL_RE = re.compile(r"^([A-Za-z0-9-]+):(.+)$")
 DRIVE_RE = re.compile(r"^([A-Za-z]):[\\/](.*)$")
 FENCE_RE = re.compile(r"^\s{0,3}(`{3,}|~{3,})")
-# The standard stored form of every link:  [[[source-id:slug|Shown text]]](relative/path/File%20Name.md)
+# The standard stored form of every link:  [[[source-id:slug|Shown text]]](C:/full/path/File%20Name.md)
 ABS_START = re.compile(r"(?:(?<![A-Za-z0-9_])[A-Za-z]:[\\/]|\\\\wsl(?:\.localhost|\$)\\|(?<![\w/:])/(?:mnt/[a-z]|home|tmp|root|opt|srv|var|usr|media)/|file:///)", re.I)
 REL_PATH = re.compile(r"(?<![\w/\\.:@%~+-])(?:\.{1,2}[\\/])*[\w.\-+%@~]+(?:[\\/][\w.\-+%@~]+)*\.md(?![A-Za-z0-9_-])(?!\.[A-Za-z0-9])", re.I)
 MD_END = re.compile(r"\.md(?![A-Za-z0-9_-])(?!\.[A-Za-z0-9])", re.I)
