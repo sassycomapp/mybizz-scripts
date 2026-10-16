@@ -38,7 +38,7 @@ MSG="${1:-}"
 if [ -z "$MSG" ]; then read -r -p "Commit message: " MSG; fi
 [ -z "$MSG" ] && { echo "STOP: a commit message is needed."; exit 1; }
 
-LOGDIR="${LOGDIR:-$HOME/backups}"; mkdir -p "$LOGDIR"; LOG="$LOGDIR/commit-all-$(date +%F-%H%M).txt"
+LOGDIR="${LOGDIR:-$HOME/backups}"; mkdir -p "$LOGDIR"; LOG="$LOGDIR/commit-all-last.txt"
 exec > >(tee "$LOG") 2>&1
 echo "Message: $MSG"
 declare -A COMMIT PUSH
