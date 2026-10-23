@@ -4,7 +4,6 @@ default = /mnt/c/dev/project-library-global
 dev-root-hub = /mnt/c/dev/dev-root
 mb-3-cs-project-library = /mnt/c/dev/dev-mb-3-cs/mb-3-cs-project-library
 mb-4-ecom-project-library = /mnt/c/dev/dev-mb-4-ecom/mb-4-ecom-project-library
-mb-5-pdlf-project-library = /mnt/c/dev/dev-mb-5-pdlf/mb-5-pdlf-project-library
 mybizz-config-docs = /mnt/c/mybizz/mybizz-config-docs
 mybizz-os-docs = /mnt/c/mybizz/mybizz-os-docs
 data-mybizz-mgt = /mnt/c/data-mybizz-mgt
