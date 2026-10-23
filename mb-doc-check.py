@@ -601,6 +601,8 @@ def protected_ranges(text: str):
         elif fence is not None and m and m.group(1)[0] == fence[0] and len(m.group(1)) >= fence[1] and ln.strip().strip(fence[0]) == "":
             ranges.append((seg, pos + len(ln)))
             fence, seg = None, None
+        elif fence is None and not ln.strip():
+            open_run = None               # a blank line ends the paragraph: the pending run is literal
         elif fence is None:
             j = 0
             while j < len(ln):
@@ -647,8 +649,10 @@ def resolve(parsed, corpus: Corpus, from_path=None):
         st, hit = path_to_doc(tp, from_path or "", corpus)
         return (st, [hit]) if hit else ("missing", [])
     if k == "qualified":
-        if not SOURCES.enabled or not SOURCES.knows(parsed["source"]):
+        if not SOURCES.enabled:
             return "skip", []
+        if not SOURCES.knows(parsed["source"]):
+            return "missing", []      # a source that is not on the list: the link leads nowhere
         slug = slugify_path(parsed["target"])
         hits = corpus.slug_hits(parsed["source"], slug)
         if len(hits) == 1:
@@ -1836,6 +1840,19 @@ def cmd_fix_broken(args):
         prot = protected_ranges(text)
         spans = [(m.start(), m.end()) for m in CANON_RE.finditer(text)]
         edits = []
+        for m in CANON_RE.finditer(text):    # a standard-form link whose target is gone becomes plain words too
+            if _in(prot, m.start()):
+                continue
+            parsed = parse_wikilink(m.group(1))
+            if parsed["kind"] == "external":
+                continue
+            st, hits = resolve(parsed, corpus, p)
+            if st == "missing" or (st == "ambiguous" and args.include_ambiguous):
+                new = prose_of(m.group(1))
+                edits.append((m.start(), m.end(), new))
+                changes.append((p, line_of(text, m.start()), m.group(0), new, st))
+            elif st == "ambiguous":
+                ambiguous_left += 1
         for m in WIKI_RE.finditer(text):
             if _in(prot, m.start()) or any(s <= m.start() < e for s, e in spans):
                 continue
