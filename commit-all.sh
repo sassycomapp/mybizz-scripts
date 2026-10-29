@@ -10,7 +10,7 @@ REPOS=(
   /mnt/c/data-mybizz-mgt
   /mnt/c/pdlf
   /mnt/c/dev/dev-root
-  /mnt/c/dev/dev-mb-3-cs/mb-3-cs-project-library
+  /mnt/c/dev/dev-mb-3-cs/mb-3-cs-project-context
   /mnt/c/dev/dev-mb-4-ecom/mb-4-ecom-project-library
   /mnt/c/dev/project-library-global
   /mnt/c/mybizz/mb-project-docs
