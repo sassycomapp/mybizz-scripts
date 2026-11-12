@@ -20,6 +20,7 @@ REPOS=(
   /mnt/c/mybizz/mb-sysdoc-creator
   /mnt/c/mybizz/mb-submit-memory
   /mnt/c/mybizz/mb-archify-scope
+  /mnt/c/mybizz/mb-form-builder
   /mnt/c/mybizz/mb-close-out
   /mnt/c/mybizz/scripts
 )
