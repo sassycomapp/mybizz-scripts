@@ -29,7 +29,7 @@ SLUG=$1; GATE=$2; RUN=$3
 case "$GATE" in
   domain-locked) STEP=16 ;;
   concept-locked) STEP=21 ;;
-  wireframes-approved) STEP=26 ;;
+  screens-approved) STEP=26 ;;
   architecture-verified) STEP=34 ;;
   build-verified) STEP=39 ;;
   production-released) STEP=44 ;;
