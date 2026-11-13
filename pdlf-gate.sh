@@ -5,6 +5,8 @@
 #
 #   bash pdlf-gate.sh --check                      only proves the ledger answers; writes nothing
 #   bash pdlf-gate.sh {slug} {gate} {run}          records {gate} as passed for that run
+#   bash pdlf-gate.sh {slug} build-verified {run} {ticket}
+#                                                  records build-verified for one ticket of the run
 #
 # {gate} is one of the seven gates of spec-gate-procedure. The gate's step row
 # for the run must exist; a gate already passed for the run is never written twice.
@@ -21,10 +23,10 @@ if [ "${1:-}" = "--check" ]; then
   echo "ledger does not answer" >&2; exit 1
 fi
 
-if [ $# -ne 3 ]; then
-  echo "Usage: bash pdlf-gate.sh {slug} {gate} {run}   or   bash pdlf-gate.sh --check" >&2; exit 2
+if [ $# -ne 3 ] && [ $# -ne 4 ]; then
+  echo "Usage: bash pdlf-gate.sh {slug} {gate} {run} [{ticket}]   or   bash pdlf-gate.sh --check" >&2; exit 2
 fi
-SLUG=$1; GATE=$2; RUN=$3
+SLUG=$1; GATE=$2; RUN=$3; TICKET=${4:-}
 
 case "$GATE" in
   domain-locked) STEP=16 ;;
@@ -39,9 +41,14 @@ esac
 for v in "$SLUG" "$RUN"; do
   [[ "$v" =~ ^[a-z0-9-]+$ ]] || { echo "Not a valid name: $v" >&2; exit 2; }
 done
+if [ "$GATE" = "build-verified" ]; then
+  [[ "$TICKET" =~ ^[a-z0-9-]+$ ]] || { echo "build-verified needs the ticket: bash pdlf-gate.sh {slug} build-verified {run} {ticket}" >&2; exit 2; }
+else
+  [ -z "$TICKET" ] || { echo "Only build-verified takes a ticket." >&2; exit 2; }
+fi
 
-ID=$(sql "SELECT id FROM steps WHERE project_slug = '$SLUG' AND step_number = '$STEP' AND run = '$RUN'")
-[ -n "$ID" ] || { echo "No Step $STEP row for $SLUG, run $RUN: the gate's step has not started." >&2; exit 1; }
+ID=$(sql "SELECT id FROM steps WHERE project_slug = '$SLUG' AND step_number = '$STEP' AND run = '$RUN' AND ticket = '$TICKET'")
+[ -n "$ID" ] || { echo "No Step $STEP row for $SLUG, run $RUN${TICKET:+, ticket $TICKET}: the gate's step has not started." >&2; exit 1; }
 
 DONE=$(sql "SELECT count(*) FROM gates WHERE step_id = $ID AND gate_name = '$GATE' AND passed")
 [ "$DONE" = "0" ] || { echo "$GATE is already passed for $SLUG, run $RUN. Nothing written." >&2; exit 1; }
