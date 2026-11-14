@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Sunday backup: PostgreSQL backup cycle (both instances), then the GBrain export.
-# Run by the Task Scheduler task SundayBackup. Exit 0 = all done; exit 9 = a step failed (see the log).
+# Weekly backup: PostgreSQL backup cycle (both instances), then the GBrain export.
+# Run by morning-tasks.ps1 once 7 days have passed since the last successful run. Exit 0 = all done; exit 9 = a step failed (see the log).
 set -uo pipefail
 export PATH="$HOME/.bun/bin:$PATH"
 D=$(date +%F)
 WSLB=/home/dev-p/backup-gbrain; WINB=/mnt/c/backup-gbrain
-LOGDIR=/mnt/c/mybizz/logs/sunday-backup; mkdir -p "$LOGDIR" "$WSLB" "$WINB"
-LOG="$LOGDIR/sunday-backup-$D.log"
+LOGDIR=/mnt/c/mybizz/logs/weekly-backup; mkdir -p "$LOGDIR" "$WSLB" "$WINB"
+LOG="$LOGDIR/weekly-backup-$D.log"
 exec > >(tee -a "$LOG") 2>&1
 FAIL=0
 FAILS=""
@@ -61,11 +61,4 @@ if [ "$FAIL" -eq 0 ]; then
 fi
 
 echo
-MSG=/mnt/c/mybizz/logs/sunday-backup/last-result.txt
-if [ "$FAIL" -eq 0 ]; then
-  printf 'Sunday backup finished: ALL DONE.\r\n\r\nNext: open OpenCode and run /mb-memory-system-diagnostic.\r\nAnswer yes to the dream cycle at its end.\r\n' > "$MSG"
-else
-  printf "Sunday backup FAILED:\r\n$FAILS\r\nDo this:\r\n1. If PostgreSQL 15 is named above, start it. PowerShell (Admin): Start-Service postgresql-x64-15\r\n2. Run the backup again. PowerShell: Start-ScheduledTask SundayBackup\r\n3. If it fails again, paste these lines to Claude.\r\n\r\nYou may still run /mb-memory-system-diagnostic,\r\nbut answer NO to the dream cycle until the backup has succeeded.\r\n" > "$MSG"
-fi
-powershell.exe -NoProfile -Command "Start-Process powershell.exe -WindowStyle Hidden -ArgumentList '-NoProfile','-ExecutionPolicy','Bypass','-File','C:\mybizz\scripts\show-sunday-result.ps1'" >/dev/null 2>&1
-if [ "$FAIL" -eq 0 ]; then echo "SUNDAY BACKUP: ALL DONE"; exit 0; else echo "SUNDAY BACKUP: FAILED - see $LOG"; exit 9; fi
+if [ "$FAIL" -eq 0 ]; then echo "WEEKLY BACKUP: ALL DONE"; exit 0; else echo "WEEKLY BACKUP: FAILED - see $LOG"; exit 9; fi
