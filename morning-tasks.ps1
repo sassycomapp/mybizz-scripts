@@ -114,6 +114,18 @@ if ($problems.Count -gt 0 -or $notes.Count -gt 0) {
   $text = ''
   if ($problems.Count -gt 0) { $text += "PROBLEMS:`r`n" + ($problems -join "`r`n`r`n") + "`r`n`r`nIf a problem stays after logging on again, paste C:\mybizz\logs\morning-tasks\morning-tasks.log to Claude.`r`n`r`n" }
   if ($notes.Count -gt 0) { $text += "TO DO TODAY:`r`n" + ($notes -join "`r`n") }
+  Add-Content -Path $Log -Value ($text -split "`r`n" | ForEach-Object { "                  $_" })
+  $Host.UI.RawUI.WindowTitle = 'Morning tasks finished - read the pop-up'
+  Write-Host ''
+  Write-Host 'Finished. Read the pop-up and click OK.'
   Add-Type -AssemblyName System.Windows.Forms
-  [System.Windows.Forms.MessageBox]::Show($text, 'Morning tasks') | Out-Null
+  $owner = New-Object System.Windows.Forms.Form
+  $owner.TopMost = $true
+  $owner.ShowInTaskbar = $false
+  $owner.StartPosition = 'CenterScreen'
+  $owner.Opacity = 0
+  $owner.Show()
+  $owner.Activate()
+  [System.Windows.Forms.MessageBox]::Show($owner, $text, 'Morning tasks') | Out-Null
+  $owner.Close()
 }
