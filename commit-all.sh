@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 # Commit, update GBrain and push every repository on the list below with one command.
+# Before committing it also: copies each changed MyBizz skill into its installed OpenCode copy, rebuilds
+# gstack's OpenCode skills when gstack's sources changed, and refreshes the graph of each app repository
+# committed since its last graph.
 #   bash commit-all.sh "your message"   does everything
 #   bash commit-all.sh --status         only shows what would be committed; changes nothing
 SYNC="${SYNC:-/mnt/c/mybizz/scripts/sync-gbrain.sh}"
@@ -42,6 +45,32 @@ exec > >(tee "$LOG") 2>&1
 echo "Message: $MSG"
 declare -A COMMIT PUSH
 BLOCKED=0; FAILED=0
+
+echo; echo "######## 0. Upkeep"
+# Installed skills: the body of each C:\mybizz\mb-<name>\<name>.md replaces the body of its installed SKILL.md; the installed frontmatter stays.
+SKILLS="${SKILLS:-$HOME/.config/opencode/skills}"
+for src in /mnt/c/mybizz/mb-*/mb-*.md; do
+  n="$(basename "$src" .md)"; [ "$(basename "$(dirname "$src")")" = "$n" ] || continue
+  dst="$SKILLS/$n/SKILL.md"; [ -f "$dst" ] || continue
+  body_src="$(awk 'c>=2{print} /^---$/{c++}' "$src")"; body_dst="$(awk 'c>=2{print} /^---$/{c++}' "$dst")"
+  if [ -n "$body_src" ] && [ "$body_src" != "$body_dst" ]; then
+    { awk 'c<2{print} /^---$/{c++}' "$dst"; printf '%s\n' "$body_src"; } > "$dst.new" && mv "$dst.new" "$dst" && echo "   installed skill updated: $n"
+  fi
+done
+# gstack: rebuild its OpenCode skills when any of its sources changed since the last rebuild.
+GS=/mnt/c/mybizz/gstack; STAMP="$LOGDIR/gstack-rebuild.stamp"
+if [ -d "$GS" ] && { [ ! -f "$STAMP" ] || [ -n "$(find "$GS" -path "$GS/.git" -prune -o -path "$GS/.opencode" -prune -o -path "$GS/node_modules" -prune -o -type f -newer "$STAMP" -print -quit)" ]; }; then
+  if (cd "$GS" && PATH="$HOME/.bun/bin:$PATH" bun run scripts/gen-skill-docs.ts --host opencode --respect-detection >/dev/null 2>&1); then touch "$STAMP"; echo "   gstack skills rebuilt"; else echo "   WARNING: gstack rebuild failed; run it by hand: cd /mnt/c/mybizz/gstack && bun run scripts/gen-skill-docs.ts --host opencode --respect-detection"; FAILED=$((FAILED + 1)); fi
+fi
+# Graphs: refresh each app repository whose last commit is newer than its graph.
+for app in /mnt/c/dev/dev-*/*-app[0-9]; do
+  [ -d "$app/graphify-out" ] || continue
+  last="$(git -C "$app" log -1 --format=%ct 2>/dev/null || echo 0)"; graph="$(stat -c %Y "$app/graphify-out")"
+  if [ "$last" -gt "$graph" ]; then
+    if (cd "$app" && graphify update "$app" >/dev/null 2>&1); then touch "$app/graphify-out"; echo "   graph refreshed: $(basename "$app")"; else echo "   WARNING: graph refresh failed: $(basename "$app")"; fi
+  fi
+done
+echo "   done"
 
 echo; echo "######## 1. Commit"
 for r in "${REPOS[@]}"; do
