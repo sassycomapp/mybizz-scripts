@@ -14,7 +14,7 @@ Everything else in the docmap is left exactly as it is. In a tree:
 The "**Verified:**" date is set to today."""
 import argparse, datetime, os, re, sys
 
-DOCMAP = "/mnt/c/dev/dev-root/docmap.md"
+DOCMAP = "/mnt/c/mybizz/mybizz-os-docs/os-reference-docs/docmap.md"
 PREFIX = os.environ.get("DOCMAP_DRIVE_PREFIX", "/mnt")          # tests point this somewhere else
 IGNORE = {".git", "node_modules", "__pycache__", "Thumbs.db", "desktop.ini", ".DS_Store"}
 MAX_NEW = 25
