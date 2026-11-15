@@ -3,6 +3,7 @@
 default = /mnt/c/dev/project-library-global
 mb-3-cs-project-library = /mnt/c/dev/dev-mb-3-cs/mb-3-cs-project-library
 mb-4-ecom-project-library = /mnt/c/dev/dev-mb-4-ecom/mb-4-ecom-project-library
+mb-1-fda-project-library = /mnt/c/dev/dev-mb-1-fda/mb-1-fda-project-library
 mybizz-config-docs = /mnt/c/mybizz/mybizz-config-docs
 mybizz-os-docs = /mnt/c/mybizz/mybizz-os-docs
 data-mybizz-mgt = /mnt/c/data-mybizz-mgt

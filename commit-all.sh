@@ -14,6 +14,7 @@ REPOS=(
   /mnt/c/pdlf
   /mnt/c/dev/dev-mb-3-cs/mb-3-cs-project-library
   /mnt/c/dev/dev-mb-4-ecom/mb-4-ecom-project-library
+  /mnt/c/dev/dev-mb-1-fda/mb-1-fda-project-library
   /mnt/c/dev/project-library-global
   /mnt/c/mybizz/mb-project-docs
   /mnt/c/mybizz/mb-memory-system-diagnostic
